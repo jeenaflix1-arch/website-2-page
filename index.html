@@ -161,8 +161,28 @@ document.querySelectorAll('.tab').forEach(t=>{
   });
 });
 
-if(CHANNELS.length){ play(CHANNELS[0].url, CHANNELS[0].name); }
+// آٹو پلے ہٹانے کے لیے نیچے والی لائن کو نکال دیا گیا ہے:
+// if(CHANNELS.length){ play(CHANNELS[0].url, CHANNELS[0].name); }
+
 render();
+
+// بیک گراؤنڈ پلے بیک روکنے کے لیے Visibility ایونٹ
+document.addEventListener("visibilitychange", () => {
+  const player = document.getElementById('player');
+  if (document.hidden) {
+    // جب یوزر براؤزر منیمائز کرے تو ویڈیو کا سورس کلیئر کر دیں
+    if (player.src) {
+      player.setAttribute('data-src', player.src);
+      player.src = '';
+    }
+  } else {
+    // جب یوزر واپس آئے تو دوبارہ وہیں سے پلے کر دیں
+    const savedSrc = player.getAttribute('data-src');
+    if (savedSrc) {
+      player.src = savedSrc;
+    }
+  }
+});
 </script>
 </body>
 </html>
